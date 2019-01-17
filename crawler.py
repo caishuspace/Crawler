@@ -77,12 +77,14 @@ def get_content2(url,name):
              
              #获取回复内容
              content['reply_text']= ul.find(name='div',class_='d_post_content').text.strip()
+             if "'" in content['reply_text']:
+                 content['reply_text']=content['reply_text'].replace("'",'"')
              #print(content['text'])
              
              #将字典加入到列表中
              contents.append(content)
              #print(content)
-             print('获取回复内容成功')
+             #print('获取回复内容成功')
         except:
             print('获取回复内容出问题')
             
@@ -137,9 +139,12 @@ def get_content(url):
             
              content['text']=li.find('div',attrs={"class":'threadlist_abs threadlist_abs_onlyline '}).text.strip()
              #print(li.find('div',attrs={"class":'threadlist_abs threadlist_abs_onlyline '}).text.strip())
+             if "'" in content['text']:
+                 content['text']=content['text'].replace("'",'"')
+             
              #将字典加入到列表中
              contents.append(content)
-             print('获取内容成功')
+             #print('获取内容成功')
  
         except:
             print('获取内容出问题')
@@ -165,7 +170,7 @@ def writedata(content):
                     conn.commit()
                     #print(b['id_link'])
                 except Exception as e:
-                    print("出问题")
+                    print(sql2)
                     conn.rollback()
                     raise e
             cursor =conn.cursor()
@@ -173,7 +178,7 @@ def writedata(content):
             conn.commit()
             
     except Exception as e:
-        print("出问题")
+        print(sql)
         conn.rollback()
         raise e
     finally:
